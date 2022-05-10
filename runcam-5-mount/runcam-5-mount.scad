@@ -3,41 +3,37 @@ include <../.libraries/Round-Anything/polyround.scad>
 $fa = 2;
 $fs = 0.4;
 
-radiiPoints = [
-        [0, 0, 2],
-        [0, 44, 2],
-        [44, 44, 2],
-        [44, 0, 2]
-    ];
 
-difference()
+root();
+
+module root()
 {
-    union()
+    difference()
     {
-        translate([0, 15, 0])
-        rotate([90, 0, 0])
-        linear_extrude(15)
-        polygon(polyRound(radiiPoints, 30));
+        union()
+        {
+            outer_mount();
+            
+            finger1_x = 17;
+            finger2_x = finger1_x + 9.1;
+            
+            
+            translate([finger1_x, 15, 0])
+            rotate([-90, 0, -90])
+            gopro_finger();
+            
+            translate([finger2_x, 0, 0])
+            rotate([-90, 0, 90])
+            gopro_finger();
+        }
         
-        finger1_x = 17;
-        finger2_x = finger1_x + 9.1;
+        translate([16, 0, 4])
+        outer_finger_seperator();
         
         
-        translate([finger1_x, 15, 0])
-        rotate([-90, 0, -90])
-        gopro_finger();
-        
-        translate([finger2_x, 0, 0])
-        rotate([-90, 0, 90])
-        gopro_finger();
+        translate([3, -1, 3])
+        camera_cutout();
     }
-    
-    translate([20, 0, -1])
-    cube([3.1, 15, 5]);
-    
-    
-    translate([3, -1, 3])
-    cube([38, 17, 38]);
 }
 
 
@@ -46,8 +42,8 @@ module gopro_finger()
 {
     radiiPoints = [
         [0, 0, 0],
-        [0, 14, 10],
-        [15, 14, 10],
+        [0, 16, 10],
+        [15, 16, 10],
         [15, 0, 0]
     ];
     
@@ -56,7 +52,63 @@ module gopro_finger()
         linear_extrude(3)
         polygon(polyRound(radiiPoints, 30));
         
-        translate([7.5, 7, 0])
+        translate([7.5, 9.5, 0])
         sphere(d = 2);
     }  
+}
+
+
+module outer_finger_seperator()
+{
+    curve = 1.5;
+    width = 3.1;
+    radiiPoints = [
+        [0, 0, 0],
+        [1, 0, 0],
+        [1, 4, curve],
+        [5, 4, 0],
+        [5, 7.1, 0],
+        [1, 7.1, curve],
+        [1, 11.1, 0],
+        [0, 11.1, 0]
+    ];
+    
+    translate([11.1,-1, 0])
+    rotate([0, 90, 90])
+    linear_extrude(17)
+    polygon(polyRound(radiiPoints, 30));
+}
+
+
+module outer_mount()
+{
+    radiiPoints = [
+        [0, 0, 2],
+        [0, 44, 2],
+        [44, 44, 2],
+        [44, 0, 2]
+    ];
+    
+    translate([0, 15, 0])
+    rotate([90, 0, 0])
+    linear_extrude(15)
+    polygon(polyRound(radiiPoints, 30));
+}
+
+
+module camera_cutout()
+{
+    size = 38; // Runcam 5 is perfectly square
+    curve = 3;
+    radiiPoints = [
+        [0, 0, curve],
+        [0, size, curve],
+        [size, size, curve],
+        [size, 0, curve]
+    ];   
+    
+    translate([0, 17, 0])
+    rotate([90, 0, 0])
+    linear_extrude(17)
+    polygon(polyRound(radiiPoints, 30));
 }
