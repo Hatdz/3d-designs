@@ -60,7 +60,7 @@ module gopro_finger()
 
 module outer_finger_seperator()
 {
-    curve = 1.5;
+    curve = 2;
     width = 3.1;
     radiiPoints = [
         [0, 0, 0],
@@ -82,11 +82,12 @@ module outer_finger_seperator()
 
 module outer_mount()
 {
+    curve = 5;
     radiiPoints = [
-        [0, 0, 2],
-        [0, 44, 2],
-        [44, 44, 2],
-        [44, 0, 2]
+        [0, 0, curve],
+        [0, 44, curve],
+        [44, 44, curve],
+        [44, 0, curve]
     ];
     
     translate([0, 15, 0])
