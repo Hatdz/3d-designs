@@ -14,22 +14,23 @@ module root()
         {
             outer_mount();
             
-            finger1_x = 17;
-            finger2_x = finger1_x + 9.1;
-            
-            
-            translate([finger1_x, 15, 0])
-            rotate([-90, 0, -90])
-            gopro_finger();
-            
-            translate([finger2_x, 0, 0])
-            rotate([-90, 0, 90])
-            gopro_finger();
+            translate([17.2, 0, 0])
+            union()
+            {
+                base = 2.8;
+                
+                translate([base, 15, 0])
+                rotate([0, 180, 90])
+                gopro_finger();
+                
+                translate([base + 5.9, 15, 0])
+                rotate([0, 180, 90])
+                gopro_finger();
+            }
         }
         
         translate([16, 0, 4])
-        outer_finger_seperator();
-        
+        finger_seperator();
         
         translate([3, -1, 3])
         camera_cutout();
@@ -37,28 +38,34 @@ module root()
 }
 
 
-
 module gopro_finger()
 {
+    width = 2.8;
+    length = 16;
+    height = 15;
+    hole = 5.2;
+    
     radiiPoints = [
         [0, 0, 0],
-        [0, 16, 10],
-        [15, 16, 10],
-        [15, 0, 0]
+        [0, length, 15],
+        [height, length, 15],
+        [height, 0, 0]
     ];
     
+    translate([0, width, 0])
+    rotate([90, 0, 0])
     difference()
     {
-        linear_extrude(3)
+        linear_extrude(width)
         polygon(polyRound(radiiPoints, 30));
         
-        translate([7.5, 9.5, 0])
-        sphere(d = 2);
+        translate([7.5, 9.5, -1])
+        cylinder(d = hole, h = width + 2);
     }  
 }
 
 
-module outer_finger_seperator()
+module finger_seperator()
 {
     curve = 2;
     width = 3.1;
@@ -80,36 +87,30 @@ module outer_finger_seperator()
 }
 
 
-module outer_mount()
+module rounded_box(dimensions, curve)
 {
-    curve = 5;
     radiiPoints = [
         [0, 0, curve],
-        [0, 44, curve],
-        [44, 44, curve],
-        [44, 0, curve]
-    ];
-    
-    translate([0, 15, 0])
-    rotate([90, 0, 0])
-    linear_extrude(15)
+        [0, dimensions[0], curve],
+        [dimensions[1], dimensions[0], curve],
+        [dimensions[1], 0, curve]
+    ]; 
+    linear_extrude(dimensions[2])
     polygon(polyRound(radiiPoints, 30));
 }
 
 
+module outer_mount()
+{   
+    translate([0, 15, 0])
+    rotate([90, 0, 0])
+    rounded_box([44, 44, 15], 5);
+}
+
+
 module camera_cutout()
-{
-    size = 38; // Runcam 5 is perfectly square
-    curve = 3;
-    radiiPoints = [
-        [0, 0, curve],
-        [0, size, curve],
-        [size, size, curve],
-        [size, 0, curve]
-    ];   
-    
+{   
     translate([0, 17, 0])
     rotate([90, 0, 0])
-    linear_extrude(17)
-    polygon(polyRound(radiiPoints, 30));
+    rounded_box([38, 38, 17], 3);
 }
