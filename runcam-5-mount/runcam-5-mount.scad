@@ -17,22 +17,22 @@ module root()
             translate([17.2, 0, 0])
             union()
             {
-                base = 2.8;
+                base = 2.9;
                 
                 translate([base, 15, 0])
                 rotate([0, 180, 90])
                 gopro_finger();
                 
-                translate([base + 5.9, 15, 0])
+                translate([base + 6, 15, 0])
                 rotate([0, 180, 90])
                 gopro_finger();
             }
         }
         
-        translate([16, 0, 4])
+        translate([16.1, 0, 3.4])
         finger_seperator();
         
-        translate([3, -1, 3])
+        translate([2.4, -1, 2.4])
         camera_cutout();
     }
 }
@@ -40,10 +40,10 @@ module root()
 
 module gopro_finger()
 {
-    width = 2.8;
+    width = 2.9;
     length = 16;
     height = 15;
-    hole = 5.2;
+    hole = 5.3;
     
     radiiPoints = [
         [0, 0, 0],
@@ -59,7 +59,7 @@ module gopro_finger()
         linear_extrude(width)
         polygon(polyRound(radiiPoints, 30));
         
-        translate([7.5, 9.5, -1])
+        translate([7.5, 9, -1])
         cylinder(d = hole, h = width + 2);
     }  
 }
@@ -104,7 +104,7 @@ module outer_mount()
 {   
     translate([0, 15, 0])
     rotate([90, 0, 0])
-    rounded_box([44, 44, 15], 5);
+    rounded_box([42.8, 42.8, 15], 5);
 }
 
 
